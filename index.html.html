@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Rutuja ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --secondary-pink: #ffb3c1;
+            --dark-red: #c9184a;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff0f3;
+            font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif;
+            overflow: hidden;
+            background-image: radial-gradient(#ffb3c1 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        #main-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            text-align: center;
+            max-width: 500px;
+            z-index: 10;
+            border: 4px solid white;
+        }
+
+        h1 {
+            color: #ff0000;
+            font-weight: 900;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            min-height: 150px;
+        }
+
+        button {
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #yesBtn {
+            background-color: var(--primary-pink);
+            color: white;
+            z-index: 100;
+        }
+
+        #yesBtn:hover {
+            background-color: var(--dark-red);
+            transform: scale(1.1);
+        }
+
+        #noBtn {
+            background-color: #f8f9fa;
+            color: #666;
+        }
+
+        .success-content {
+            display: none;
+        }
+
+        .success-content h2 {
+            color: var(--dark-red);
+            font-size: 2.5rem;
+        }
+
+        .heart-icon {
+            font-size: 4rem;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Floating background hearts */
+        .bg-heart {
+            position: absolute;
+            color: var(--secondary-pink);
+            opacity: 0.5;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-card">
+        <div id="ask-section">
+            <div class="heart-icon">💝</div>
+            <h1>Rutuja, will you be my valentine ❤️?</h1>
+            
+            <div class="btn-container">
+                <button id="yesBtn" onclick="celebrate()">Yes</button>
+                <button id="noBtn" onclick="hesitate()">are you sure</button>
+            </div>
+        </div>
+
+        <div id="success-section" class="success-content">
+            <div class="heart-icon">💖</div>
+            <h2>knew you would say yes!</h2>
+            <p>You've made my day! 🥰</p>
+        </div>
+    </div>
+
+    <script>
+        let clickCount = 0;
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        
+        const phrases = [
+            "are you sure",
+            "really sure?",
+            "pookie please",
+            "if you say no, i will be really sad"
+        ];
+
+        function hesitate() {
+            clickCount++;
+            
+            // Update No button text
+            if (clickCount < phrases.length) {
+                noBtn.innerText = phrases[clickCount];
+            } else {
+                noBtn.innerText = phrases[phrases.length - 1];
+            }
+
+            // Make the Yes button grow!
+            const newSize = 1.1 + (clickCount * 0.4);
+            yesBtn.style.transform = scale(${newSize});
+            
+            // Move the No button slightly to be "playful"
+            const x = Math.random() * 20 - 10;
+            const y = Math.random() * 20 - 10;
+            noBtn.style.transform = translate(${x}px, ${y}px);
+        }
+
+        function celebrate() {
+            document.getElementById('ask-section').style.display = 'none';
+            document.getElementById('success-section').style.display = 'block';
+            
+            // Confetti Blast!
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              var particleCount = 50 * (timeLeft / duration);
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        // Create background floating hearts
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'bg-heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = Math.random() * 100 + 'vh';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.transform = rotate(${Math.random() * 360}deg);
+            document.body.appendChild(heart);
+        }
+    </script>
+</body>
+</html>
